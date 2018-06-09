@@ -1,0 +1,100 @@
+/* Copyright (c) 2014, The Linux Foundation. All rights reserved.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License version 2 and
+* only version 2 as published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*/
+
+/dts-v1/;
+
+#include "msm8909-mtp.dtsi"
+#include "msm8909-camera-sensor-mtp.dtsi"
+#include "msm8909-pm8916.dtsi"
+#include "msm8909-pm8916-mtp.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. MSM8909-PM8916 SMB1360 1GB MTP";
+	compatible = "qcom,msm8909-mtp", "qcom,msm8909", "qcom,mtp";
+	qcom,board-id= <8 0x4>;
+};
+
+&i2c_4 {
+	smb1360_otg_supply: smb1360-chg-fg@14 {
+		compatible = "qcom,smb1360-chg-fg";
+		reg = <0x14>;
+		interrupt-parent = <&msm_gpio>;
+		interrupts = <58 8>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&smb_int_default>;
+		regulator-name = "smb1360_otg_vreg";
+
+		qcom,pre-charge-led-gpio = <&msm_gpio 3 0x00>;   /*TODO: check PCB design */
+
+		/* battery capacity */
+		qcom,fg-batt-capacity-mah = <2540>;   /*TODO: check battery capacity */
+		qcom,fg-cc-soc-coeff = <0x8273>;   /*need TODO: open a case and ask qcom */
+
+		qcom,fg-cutoff-voltage-mv = <3400>;
+		qcom,empty-soc-disabled;
+		qcom,rsense-10mhom;
+		qcom,fg-iterm-ma = <150>;
+		qcom,fg-ibatt-standby-ma = <200>;
+		qcom,fg-cc-to-cv-mv = <4380>;   /*need TODO: check whether it is OK. */
+		qcom,thermistor-c1-coeff = <0x85EC>;   /*need TODO: check NTC beta from HW engineer and search the value from Table 5-4 in SMB1360 datasheet */
+
+		qcom,charging-timeout = <0>;    /*TODO: "0" means safety timer disabled */
+		qcom,float-voltage-mv = <4400>;
+		qcom,iterm-ma = <150>;
+		qcom,recharge-thresh-mv = <200>;   /*TODO: check whether it works when "qcom,fg-auto-recharge-soc" is specified */
+		qcom,fg-soc-max = <85>;   /*it not work in driver, we can del this line */
+		qcom,fg-soc-min = <5>;
+		qcom,fg-auto-recharge-soc = <95>;  /*TODO: check which value is suitable */
+		qcom,chg-inhibit-disabled;
+		qcom,thermal-mitigation = <1500 700 600 0>;
+		/*
+		qcom,config-hard-thresholds;
+		qcom,hot-bat-decidegc = <590>;
+		qcom,cold-bat-decidegc = <10>;
+		*/
+		qcom,soft-jeita-supported;
+		qcom,warm-bat-decidegc = <450>;
+		qcom,cool-bat-decidegc = <150>;
+		qcom,warm-bat-mv = <4200>;/*TODO*/
+		qcom,cool-bat-mv = <4400>;/*TODO*/
+		qcom,warm-bat-ma = <600>;/*TODO*/
+		qcom,cool-bat-ma = <600>;/*TODO*/
+		qcom,adapter-current-limit = <1000>;  /*TODO: check output of adapter */
+
+		qcom,otg-batt-curr-limit = <1500>;
+		qcom,fg-reset-at-pon;
+		qcom,fg-reset-thresold-mv = <50>;
+		qcom,shdn-after-pwroff;
+
+		qcom,fg-delta-soc = <1>;
+
+		qcom,profile_to_load = <0>;  /*TODO: <0> = profile A, <1> = profile B */
+	};
+};
+
+&pm8916_chg {
+	status = "ok";
+	qcom,use-external-charger;
+};
+
+&pm8916_bms {
+	status = "ok";
+	qcom,disable-bms;
+};
+
+&usb_otg {
+	interrupts = <0 134 0>,<0 140 0>,<0 136 0>;
+	interrupt-names = "core_irq", "async_irq", "phy_irq";
+
+	qcom,hsusb-otg-mode = <3>;
+	vbus_otg-supply = <&smb1360_otg_supply>;
+};
