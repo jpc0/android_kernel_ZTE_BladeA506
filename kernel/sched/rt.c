@@ -898,11 +898,7 @@ static int sched_rt_runtime_exceeded(struct rt_rq *rt_rq)
 
 			if (!once) {
 				once = true;
-<<<<<<< HEAD
 				dump_throttled_rt_tasks(rt_rq);
-=======
-				printk_deferred("sched: RT throttling activated\n");
->>>>>>> 3984bb13c8f5... printk: rename printk_sched to printk_deferred
 			}
 		} else {
 			/*
