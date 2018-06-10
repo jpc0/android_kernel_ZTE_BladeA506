@@ -720,14 +720,8 @@ static const struct usb_device_id products[] = {
 	{QMI_FIXED_INTF(0x19d2, 0x1402, 2)},	
 	{QMI_FIXED_INTF(0x19d2, 0x1424, 2)},
 	{QMI_FIXED_INTF(0x19d2, 0x1425, 2)},
-<<<<<<< HEAD
 	{QMI_FIXED_INTF(0x19d2, 0x1426, 2)},	
 	{QMI_FIXED_INTF(0x19d2, 0x2002, 4)},	
-=======
-	{QMI_FIXED_INTF(0x19d2, 0x1426, 2)},	/* ZTE MF91 */
-	{QMI_FIXED_INTF(0x19d2, 0x1428, 2)},	/* Telewell TW-LTE 4G v2 */
-	{QMI_FIXED_INTF(0x19d2, 0x2002, 4)},	/* ZTE (Vodafone) K3765-Z */
->>>>>>> c86572ab06fe... net: qmi_wwan: Add ID for Telewell TW-LTE 4G v2
 	{QMI_FIXED_INTF(0x0f3d, 0x68a2, 8)},    /* Sierra Wireless MC7700 */
 	{QMI_FIXED_INTF(0x114f, 0x68a2, 8)},    /* Sierra Wireless MC7750 */
 	{QMI_FIXED_INTF(0x1199, 0x68a2, 8)},	/* Sierra Wireless MC7710 in QMI mode */
